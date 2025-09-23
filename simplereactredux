@@ -1,0 +1,114 @@
+1) Components/Product.jsx
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { storeProduct } from "../redux/ProductSlice";
+
+const Product = () => {
+  const [inputValue, setInputValue] = useState("");
+  const dispatch = useDispatch();
+  const Navigate = useNavigate();
+
+  const handleSubmit = () => {
+    if (inputValue.trim() !== "") {
+      dispatch(storeProduct(inputValue));
+      Navigate("/product-details");
+    }
+  };
+
+  const handleChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  return (
+    <>
+      <input type="text" value={inputValue} onChange={handleChange} />
+      <br />
+      <button type="button" onClick={handleSubmit}>
+        Submit
+      </button>
+      <h1>Hello How Are you</h1>
+    </>
+  );
+};
+
+export default Product;
+
+2) Components/ProductDetails
+import { useSelector } from "react-redux";
+
+const ProductDetails = () => {
+  // read from Redux store
+  const product = useSelector((state) => state.product);
+
+  return (
+    <>
+      <h2>Product Details</h2>
+      {product ? (
+        <p>Stored Product: {product}</p>
+      ) : (
+        <p>No product stored yet</p>
+      )}
+    </>
+  );
+};
+
+export default ProductDetails;
+
+3) redux/ProductSlice.jsx
+// New file: /redux/ProductSlice.jsx
+import { createSlice } from "@reduxjs/toolkit";
+
+const ProductSlice = createSlice({
+  name: "product",
+  initialState: null,
+  reducers: {
+    storeProduct: (state, action) => {
+      state = action.payload;
+      return state;
+    },
+    removeProduct: (state, action) => {
+      return null;
+    },
+  },
+});
+
+export const { storeProduct, removeProduct } = ProductSlice.actions;
+
+export default ProductSlice.reducer;
+
+4) redux/Store.jsx
+import { configureStore } from "@reduxjs/toolkit";
+import productReducer from "./ProductSlice";
+
+const store = configureStore({
+  reducer: {
+    product: productReducer,
+  },
+});
+
+export default store;
+
+5) App.jsx
+import Product from "./Components/Product.jsx";
+import ProductDetails from "./Components/ProductDetails.jsx";
+
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Store from "./redux/Store.jsx";
+import { Provider } from "react-redux";
+const App = () => {
+  return (
+    <>
+      <Provider store={Store}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Product />} />
+            <Route path="/product-details" element={<ProductDetails />} />
+          </Routes>
+        </BrowserRouter>
+      </Provider>
+    </>
+  );
+};
+export default App;
+
