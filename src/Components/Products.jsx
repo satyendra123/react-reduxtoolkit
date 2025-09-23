@@ -10,7 +10,7 @@ const Products = () =>{
         .then((response)=>response.json())
         .then((data)=>{
             console.log(data);
-            dispatch(storeProduct());
+            setProduct(data);
         })
         .catch((err)=>{
             console.log(err)
@@ -18,7 +18,7 @@ const Products = () =>{
     },[])
 
     const viewProducts = (item) =>{
-        console.log(item)
+        dispatch(storeProduct(item));
     }
 
     return(
