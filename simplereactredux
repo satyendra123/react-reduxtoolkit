@@ -1,3 +1,5 @@
+Note- isme mai kya karunga ki ek input field lunga aur us input field me jo bhi data aayega use mai ProductSlice ke andar use store karaunga Product.jsx file ke andar se dispatch function ka use karke
+      aur useSelector se us data ko show karwaunga dusre kisi component me
 1) Components/Product.jsx
 import { useState } from "react";
 import { useDispatch } from "react-redux";
