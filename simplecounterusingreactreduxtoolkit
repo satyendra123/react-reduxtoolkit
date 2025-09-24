@@ -1,0 +1,50 @@
+EX-1) redux/CounterSlice.jsx
+import { createSlice } from "@reduxjs/toolkit";
+
+const counterSlice = createSlice({
+  name: "counter",
+  initialState: 0, // start value
+  reducers: {
+    increment: (state) => state + 1,
+    decrement: (state) => state - 1,
+    reset: () => 0,
+  },
+});
+
+export const { increment, decrement, reset } = counterSlice.actions;
+
+export default counterSlice.reducer;
+
+EX-2)redux/Store.jsx
+import { configureStore } from "@reduxjs/toolkit";
+import counterReducer from "./CounterSlice";
+
+const store = configureStore({
+  reducer: {
+    counter: counterReducer,
+  },
+});
+
+export default store;
+
+EX-3) Components/Counter.jsx
+import { useSelector, useDispatch } from "react-redux";
+import { increment, decrement, reset } from "../redux/CounterSlice";
+
+const Counter = () => {
+  const count = useSelector((state) => state.counter);
+  const dispatch = useDispatch();
+
+  return (
+    <div>
+      <h2>Counter: {count}</h2>
+      <button onClick={() => dispatch(increment())}>+</button>
+      <button onClick={() => dispatch(decrement())}>-</button>
+      <button onClick={() => dispatch(reset())}>Reset</button>
+    </div>
+  );
+};
+
+export default Counter;
+
+EX-3)
